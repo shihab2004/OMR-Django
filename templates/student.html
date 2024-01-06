@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}
+ORM - Student {{prefix}} 
+{% endblock title %}
+
+
+{% block heading %}
+Student {{prefix}} 
+{% endblock heading %}
+
+
+{% block content %}
+<div class="container">
+   
+</div>
+
+<div class="container">
+    <form class="row g-3 mt-4" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+        
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">ID</label>
+            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.stu_id}}" name="stu_id">
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Name</label>
+            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.name}}" name="name">
+            
+          </div>
+
+
+        <div class="col-md-6">
+          <label for="inputEmail4" class="form-label">Subject</label>
+          <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.subject}}" name="subject">
+        </div>
+        <div class="col-md-6">
+          <label for="inputPassword4" class="form-label">Dept</label>
+          <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %}  value="{{student.dept}}" name="dept">
+        </div>
+
+
+
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Batch</label>
+            <input type="number" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.batch}}" name="batch">
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Section</label>
+            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.section}}" name="section">
+            
+          </div>
+
+          
+          <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Examiner</label>
+            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.examiner}}" name="examiner">
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Code</label>
+            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.code}}" name="code">
+          </div>
+
+
+
+
+
+          {% if not read_only %}
+
+          <div class="col-md-12">
+            <label for="inputPassword4" class="form-label">Upload File</label>
+            <input type="file" class="form-control" id="file_img" name="exam_sheet">
+            
+          </div>
+
+       
+          
+          {% endif %}
+
+          <div id="show_result"></div>
+          {% if  read_only %}
+                <div class="col-md-12">
+                  <h4>Result: </h4>
+                <div class="text-center fw-bolder text-uppercase">
+                  <p>physics:{{student.physics}} </p>
+                  <p>chemistry:{{student.chemistry}} </p>
+                  <p>math:{{student.math}} </p>
+                  <p>english:{{student.english}} </p>
+                  <p>analytical:{{student.analytical}} </p>
+                  <p>Total: {{student.result}}</p>
+                </div>
+                </div>
+          {% endif %}
+
+
+
+          <div class="col-md-12 text-center">
+            
+            <img src="{% if student.exam_sheet %}/media/{{student.exam_sheet}}{% endif %}" height="250" width="250"  alt="" id="result_img"  {% if not student.exam_sheet %} style="display: none;"{% endif %}>
+            
+          </div>
+
+          
+       
+          {% if not read_only %}
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-dark">Save</button>
+        </div>
+        {% endif %}
+      </form>
+</div>
+  
+
+
+<style>
+    #spnner{
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+      opacity: 0.9;
+      z-index: 1;
+    }
+    #spnner .main{
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      left: 50%;
+    }
+    .inactive{
+      display: none;
+    }
+  </style>
+        <div id="spnner" class="inactive">
+            <div class="main">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"> </div>
+                    Loading...
+            </div>
+         </div>
+
+         
+<script>
+    
+    var csrfmiddlewaretoken = "{{csrf_token}}";
+    $('#file_img').change((e)=>{
+        var formData = new FormData()
+        formData.append("file",e.currentTarget.files[0])
+        formData.append("csrfmiddlewaretoken",csrfmiddlewaretoken)
+
+        $.ajax({
+            url:"/create-template/?img_lookUp=True&achieve_id={{pk}}&result=True",
+            method:"POST",
+            data:formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            beforeSend:(e)=>{
+                // document.write("asdad")
+                $("#spnner").removeClass("inactive");
+            },
+            success:(e)=>{
+              console.log(e);
+              $("#spnner").addClass("inactive");
+              $("#result_img").show()
+              $("#result_img").attr("src",`data:image/png;base64,${e.img_b64}`)
+
+              var physics  = e.physics
+              var chemistry  = e.chemistry
+              var math  = e.math
+              var english  = e.english
+              var analytical  = e.analytical
+              var analytical  = e.analytical
+              var total = chemistry + physics + math + english + analytical
+
+              $("#show_result").html(`
+              <div class="col-md-12">
+                  <h4>Result: </h4>
+                <div class="text-center fw-bolder text-uppercase">
+                  <p>physics: ${physics}</p>
+                  <input type="hidden" name="physics" value="${physics}">
+
+                  <p>chemistry: ${chemistry}</p>
+                  <input type="hidden" name="chemistry" value="${chemistry}">
+
+                  <p>math: ${math}</p>
+                  <input type="hidden" name="math" value="${math}">
+
+                  <p>english: ${english}</p>
+                  <input type="hidden" name="english" value="${english}">
+
+                  <p>analytical: ${analytical}</p>
+                  <input type="hidden" name="analytical" value="${analytical}">
+
+                  <p>Total: ${total}</p>
+                  <input type="hidden" name="result" value="${total}">
+                  </div>
+                </div>
+              
+              `)
+            },
+            error:(e)=>{
+                $("#spnner").addClass("inactive");
+                alert("Faild Connection... Please try again later...");
+            }
+        })
+    })
+</script>
+
+
+
+{% endblock content %}

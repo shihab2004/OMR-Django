@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+OMR - Student List
+{% endblock title %}
+
+
+{% block heading %}
+  Student List
+{% endblock heading %}
+
+{% block content %}
+
+<style>
+    button{
+        width: 500px;
+        text-align: left;
+    }
+    @media screen and (max-width: 590px) {
+        button {
+            width: 300px;
+        }
+    }
+    @media screen and (max-width: 360px) {
+        button {
+            width: 150px;
+        }
+    }
+
+    a{
+        text-decoration: none;
+    }
+ 
+</style>
+
+
+
+
+<form action="" method="post">
+
+    {% csrf_token %}
+<div class="container my-5 " >
+    <div style="text-align: right;" class="my-3">
+        
+        <a href="add/" class="mx-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+        </a>
+        {% if  object_list %}
+        <a href="#download" class="mx-1"  onclick="$('form').submit()">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" height="35" width="35" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39V184c0-13.3-10.7-24-24-24s-24 10.7-24 24V318.1l-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z"/></svg>
+        </a>
+        <a href="#share" class="mx-2" onclick="$('form').attr('action','?download=True');$('form').submit();">
+            <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M352 224H305.5c-45 0-81.5 36.5-81.5 81.5c0 22.3 10.3 34.3 19.2 40.5c6.8 4.7 12.8 12 12.8 20.3c0 9.8-8 17.8-17.8 17.8h-2.5c-2.4 0-4.8-.4-7.1-1.4C210.8 374.8 128 333.4 128 240c0-79.5 64.5-144 144-144h80V34.7C352 15.5 367.5 0 386.7 0c8.6 0 16.8 3.2 23.2 8.9L548.1 133.3c7.6 6.8 11.9 16.5 11.9 26.7s-4.3 19.9-11.9 26.7l-139 125.1c-5.9 5.3-13.5 8.2-21.4 8.2H384c-17.7 0-32-14.3-32-32V224zM80 96c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16H400c8.8 0 16-7.2 16-16V384c0-17.7 14.3-32 32-32s32 14.3 32 32v48c0 44.2-35.8 80-80 80H80c-44.2 0-80-35.8-80-80V112C0 67.8 35.8 32 80 32h48c17.7 0 32 14.3 32 32s-14.3 32-32 32H80z"/></svg>
+        </a>
+        
+        {% endif %}
+        
+    </div>
+
+
+    <table class="table  table-hover text-center">
+        <thead>
+            <tr>
+                <th scope="col" >Name</th>
+                <th scope="col">ID</th>
+                <th scope="col">View Students</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if  object_list %}
+            {% for student  in object_list   %}
+                    <tr>
+                    
+                    <td >
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="{{student.pk}}">
+                            <label class="form-check-label" for="flexCheckDefault">
+                             {{student.name}}
+                            </label>
+                          </div>
+                    
+                    
+                    </td>
+                    <td>
+                        
+                      {{student.stu_id}}
+                        
+                    </td>
+                    <td><a href="/student-details/{{student.pk}}/">View Details</a></td>
+                </tr>
+         
+            {% endfor %}
+            {% else %}
+
+            <tr>
+              
+                <td colspan="3">
+                    
+                 No Students Found!
+                    
+                </td>
+            </tr>
+            
+            {% endif %}
+        </tbody>
+    </table>
+   
+
+    
+
+</div>
+
+</form>
+
+
+
+
+{% endblock content %}
