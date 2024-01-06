@@ -9,5 +9,5 @@ class AnswerSheetAdmin(admin.ModelAdmin):
     list_display = ['dept',"subject","batch"]
     
 @admin.register(StudentResultSheet)
-class AnswerSheetAdmin(admin.ModelAdmin):
-    list_display = ['name',"dept","subject","batch"]
+class StudentResultSheetAdmin(admin.ModelAdmin):
+    list_display = ['name',"roll"]
