@@ -21,47 +21,14 @@ Student {{prefix}}
 
         
         <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">ID</label>
-            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.stu_id}}" name="stu_id">
-          </div>
-          <div class="col-md-6">
-            <label for="inputPassword4" class="form-label">Name</label>
+            <label for="inputEmail4" class="form-label">Name</label>
             <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.name}}" name="name">
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Roll</label>
+            <input type="number" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.roll}}" name="roll">
             
           </div>
-
-
-        <div class="col-md-6">
-          <label for="inputEmail4" class="form-label">Subject</label>
-          <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.subject}}" name="subject">
-        </div>
-        <div class="col-md-6">
-          <label for="inputPassword4" class="form-label">Dept</label>
-          <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %}  value="{{student.dept}}" name="dept">
-        </div>
-
-
-
-        <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">Batch</label>
-            <input type="number" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.batch}}" name="batch">
-          </div>
-          <div class="col-md-6">
-            <label for="inputPassword4" class="form-label">Section</label>
-            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.section}}" name="section">
-            
-          </div>
-
-          
-          <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">Examiner</label>
-            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.examiner}}" name="examiner">
-          </div>
-          <div class="col-md-6">
-            <label for="inputPassword4" class="form-label">Code</label>
-            <input type="text" class="form-control" id="inputEmail4" {% if read_only %}readonly{% endif %} value="{{student.code}}" name="code">
-          </div>
-
 
 
 
