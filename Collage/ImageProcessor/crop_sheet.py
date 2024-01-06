@@ -3,7 +3,7 @@ import imutils
 from imutils import contours
 from Collage.ImageProcessor import four_point 
 
-def crop_sheet(image):
+def crop_sheet(image,extra=False):
     #answer_img
     image= image
     # img = cv2.imread('omr4.jpg')
@@ -39,4 +39,8 @@ def crop_sheet(image):
     crop = warped[y:y+h, x:x+w]
     crop = cv2.resize(crop,(388,388))
     new_crop = crop.copy()
+    
+    if extra:
+        return new_crop, [ x, y, w, h]
+    
     return new_crop

@@ -2,7 +2,6 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.http import JsonResponse
-from time import sleep
 import cv2
 import numpy as np
 from django.views.generic import ListView
@@ -11,10 +10,7 @@ from .ImageProcessor.crop_sheet import crop_sheet
 import base64
 from django.contrib import messages
 from Collage.forms import *
-from django.conf import settings
-import os
 import pandas as pd
-import urllib.parse as url_parse
 # Create your views here.
 
 
@@ -50,11 +46,15 @@ class CreateTemplate(View):
             file = request.FILES['file']
             
             img = cv2.imdecode(np.frombuffer(file.read(), np.uint8),-1)
-            img = crop_sheet(img)
             
             
             if request.GET.get("result"):
-                context = self.calculator_result(img, int(request.GET.get("achieve_id")) )
+                context , img = self.calculator_result(img, int(request.GET.get("achieve_id")) )
+            
+            else:
+                
+                img = crop_sheet(img)
+            
             
             retval, buffer = cv2.imencode('.png', img)
             base64_img = base64.b64encode(buffer).decode()
@@ -119,11 +119,7 @@ class StudentsList(ListView,View):
         post_data = dict(request.POST.copy())
         del post_data['csrfmiddlewaretoken']
         url = "-".join([key for key, val in post_data.items()])
-        # 
-        # )
-        # for  key , val in :
-        #         q_data += (str(key) + ",")
-        
+   
         print(post_data.items())
         print(url)
         if request.GET.get("download"):
@@ -185,15 +181,7 @@ class StudentAdd(View):
         self.get(request,*args, **kwargs)
      
      
-        # form = StudentResultSheet(request.POST,request.FILES)
-        # if form.is_valid():
-        #         messages.success(request, "New Template Created.")
-        #         form.save()
-        #         return redirect("/")
-            
-        # else:
-        #         messages.error(request, "Invalid Form.")
-    
+
     
 
 
@@ -208,7 +196,7 @@ def downloadStudentResultSheet(request,slug):
         for key in slug.split("-"):
             try:
                 a = StudentResultSheet.objects.filter(pk=int(key)).values(
-                    "name", "subject","dept","batch","section","examiner","code","stu_id","physics","chemistry","math","english","analytical","result"
+                    "name", "roll","physics","chemistry","math","english","analytical","result"
                 )[0]
       
                 df = df._append(a, ignore_index=True)
