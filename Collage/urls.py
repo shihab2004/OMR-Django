@@ -10,5 +10,6 @@ urlpatterns = [
     path('achieve/<int:pk>/students/', StudentsList.as_view()),
     path('student-details/<int:pk>/', studentDetails),
     path('achieve/<int:pk>/students/add/', StudentAdd.as_view()),
-    path('download/<str:slug>/',downloadStudentResultSheet)
+    path('download/<str:slug>/',downloadStudentResultSheet),
+    path('student-details/<int:pk>/update/', studentDetailsEdit),
 ]

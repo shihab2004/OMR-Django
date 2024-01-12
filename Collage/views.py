@@ -212,3 +212,20 @@ def downloadStudentResultSheet(request,slug):
 
 
 
+
+from django.views.generic.edit import UpdateView 
+
+
+def studentDetailsEdit(request,pk):
+    item = StudentResultSheet.objects.get(pk=pk)
+
+    print(request.POST)
+    if request.method == 'POST':
+        form = StudentResultSheetForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            
+            print(request.POST)
+    
+    
+    return redirect(f'/student-details/{pk}/')  
