@@ -9,6 +9,8 @@ class StudentResultSheet(models.Model):
     
     
     exam_sheet = models.ImageField(upload_to="student/",null=True,blank=True)
+    matched_sheet_b64 = models.TextField(null=True,blank=True)
+    
     physics = models.IntegerField(null=True,blank=True,default=0)
     chemistry = models.IntegerField(null=True,blank=True,default=0)
     math = models.IntegerField(null=True,blank=True,default=0)
@@ -30,6 +32,8 @@ class StudentResultSheet(models.Model):
             total += self.math
         if self.analytical:
             total += self.analytical
+        if self.english:
+            total += self.english
         
         self.result = total
         

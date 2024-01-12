@@ -162,8 +162,7 @@ class StudentAdd(View):
     
     def post(self,request,*args, **kwargs):
    
-        print(request.POST)
-        print(request.FILES)
+
         form = StudentResultSheetForm(request.POST,files=request.FILES)
         if form.is_valid():
             messages.success(request, "New Student Created.")

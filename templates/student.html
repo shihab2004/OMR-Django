@@ -80,7 +80,7 @@ Student {{prefix}}
                   <h4>Total: {{student.result}}</h4>
 
 
-                  
+                  <input type="hidden" name="matched_sheet_b64" value="{{student.matched_sheet_b64}}">
               
                 </div>
       
@@ -91,6 +91,7 @@ Student {{prefix}}
           <div class="col-md-12 text-center">
             
             <img src="{% if student.exam_sheet %}/media/{{student.exam_sheet}}{% endif %}" height="250" width="250"  alt="" id="result_img"  {% if not student.exam_sheet %} style="display: none;"{% endif %}>
+            <img src="{% if student.matched_sheet_b64 %}data:image/png;base64,{{student.matched_sheet_b64}}{% endif %}" height="250" width="250"  alt="" id="result_img"  {% if not student.matched_sheet_b64 %} style="display: none;"{% endif %}>
             
           </div>
 
@@ -191,6 +192,8 @@ Student {{prefix}}
                 <input type="hidden" name="result" value="${total}">
                 </div>
               </div>
+
+              <input type="hidden" name="matched_sheet_b64" value="${e.img_b64}">
             
             `)
           },
