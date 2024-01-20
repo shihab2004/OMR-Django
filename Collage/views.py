@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
@@ -111,10 +112,12 @@ class StudentsList(ListView,View):
     
     
     
+    def get_context_data(self, **kwargs: Any) :
+        context =  super().get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        return context
+    
     def post(self,request,*args, **kwargs):
-        
-        
-        
         
         post_data = dict(request.POST.copy())
         del post_data['csrfmiddlewaretoken']
