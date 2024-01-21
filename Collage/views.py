@@ -34,8 +34,7 @@ class CreateTemplate(View):
     def calculator_result(self,exam_sheet,achieve_id):
         
         file = AnswerSheet.objects.get(pk=achieve_id).result_sheet
-        img = cv2.imdecode(np.frombuffer(file.read(), np.uint8),-1)
-        ans_sheet = crop_sheet(img)
+        ans_sheet = cv2.imdecode(np.frombuffer(file.read(), np.uint8),1)
         
         return calculate_imgage(ans_sheet,exam_sheet)
     
@@ -46,7 +45,7 @@ class CreateTemplate(View):
             
             file = request.FILES['file']
             
-            img = cv2.imdecode(np.frombuffer(file.read(), np.uint8),-1)
+            img = cv2.imdecode(np.frombuffer(file.read(), np.uint8),1)
             
             
             if request.GET.get("result"):
