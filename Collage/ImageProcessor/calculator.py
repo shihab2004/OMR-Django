@@ -1,5 +1,3 @@
-
-from Collage.ImageProcessor import crop_ans
 import numpy as np
 import cv2
 from Collage.ImageProcessor.crop_sheet import crop_sheet
